@@ -1,14 +1,14 @@
 ﻿#=================================================================,,,
 # Panel,,,
-# Report Suite: Main Site (Prod),,,
-"# Date: Oct 1, 2020 - Dec 13, 2020",,,
+# Report Suite: ,,,
+"# Date: ",,,
 #=================================================================,,,
 ,,,
 ,,,
 ##############################################,,,
-# Freeform Table - Channel manager-cross visit (v38) (6194 items out of 6194),,,
+# Freeform Table - visit 4),,,
 ##############################################,,,
-,Membership Step 4.0 - Confirmation (ev23),Channel manager-cross visit (v38) Instances,Channel: Conversion Rate
+,Confirmation,Channel manager-cross visit (v38) Instances,Channel: Conversion Rate
 Channel manager-cross visit (v38),42480,12823665,0.003312626
 natural search,14657,7622911,0.001922756
 paid search,7755,302616,0.025626537
