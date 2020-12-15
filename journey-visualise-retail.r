@@ -2,11 +2,11 @@ library(readr)
 library(plotly)
 library(RColorBrewer)
 
-channel_stacks <- read_csv("data/data-membership.csv", skip = 11)
+channel_stacks <- read_csv("data/data-shop.csv", skip = 11)
 colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
 head(channel_stacks)
 
-p1 = plot_ly(
+s1 = plot_ly(
   channel_stacks, 
   y=~conversion, 
   x=~path_count,
@@ -19,7 +19,7 @@ p1 = plot_ly(
 ) %>% colorbar(
   title = "Rate"
 )
-p1
+s1
 channel_stacks$path_list = strsplit(x=channel_stacks$path,split=">")
 depth = 4
 
@@ -83,7 +83,7 @@ for(i in 1:length(label_length)){
 display_node_labels = c(display_node_labels, "Conversion")
 
 #Generate Sankey diagram
-p2 <- plot_ly(
+s2 <- plot_ly(
   type = "sankey",
   orientation = "v",
   
@@ -107,10 +107,10 @@ p2 <- plot_ly(
   )
 ) %>% 
   layout(
-    title = "Channel Conversion Flow - Membership Sales - Oct 1st - Dec 13th 2020",
+    title = "Channel Conversion Flow - Shop Sales - Oct 1st - Dec 13th 2020",
     font = list(
       size = 10
     )
   )
-p2
+s2
 
