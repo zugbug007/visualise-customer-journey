@@ -2,7 +2,7 @@ library(readr)
 library(plotly)
 library(RColorBrewer)
 
-channel_stacks <- read_csv("Freeform Table - Channel manager-cross visit (v38).csv", skip = 11)
+channel_stacks <- read_csv("data/data.csv", skip = 11)
 colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
 head(channel_stacks)
 
