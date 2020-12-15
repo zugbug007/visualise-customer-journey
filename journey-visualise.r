@@ -1,11 +1,12 @@
 library(readr)
 library(plotly)
+library(RColorBrewer)
 
 channel_stacks <- read_csv("Freeform Table - Channel manager-cross visit (v38).csv", skip = 11)
 colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
 head(channel_stacks)
 
-p = plot_ly(
+p1 = plot_ly(
   channel_stacks, 
   y=~conversion, 
   x=~path_count,
@@ -18,7 +19,7 @@ p = plot_ly(
 ) %>% colorbar(
   title = "Rate"
 )
-p
+p1
 channel_stacks$path_list = strsplit(x=channel_stacks$path,split=">")
 depth = 4
 
@@ -62,7 +63,7 @@ for(i in 1:(dim(combos)[1])){
 #OK to here
 #Add a node to populate with conversion values
 uniques = unique(c(combos$source,combos$target))
-#Fails on line below
+
 converts = as.data.frame(list("step"=rep(0,length(uniques)), "source"=uniques, "target"=rep(max(uniques)+1,length(uniques)), 
                               "value"=rep(0,length(uniques))))
 combos = rbind(combos,converts)
@@ -82,7 +83,7 @@ for(i in 1:length(label_length)){
 display_node_labels = c(display_node_labels, "Conversion")
 
 #Generate Sankey diagram
-p <- plot_ly(
+p2 <- plot_ly(
   type = "sankey",
   orientation = "v",
   
@@ -106,10 +107,10 @@ p <- plot_ly(
   )
 ) %>% 
   layout(
-    title = "Conversion Flow Diagram",
+    title = "Channel Conversion Flow - Membership Sales - Oct 1st - Dec 13th 2020",
     font = list(
       size = 10
     )
   )
-p
+p2
 
