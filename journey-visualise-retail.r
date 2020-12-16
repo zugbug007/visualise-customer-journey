@@ -85,24 +85,25 @@ display_node_labels = c(display_node_labels, "Conversion")
 #Generate Sankey diagram
 s2 <- plot_ly(
   type = "sankey",
-  orientation = "v",
+  orientation = "h",
   
   node = list(
     label = display_node_labels,
    #color = node_colors,
     pad = 10,
-   alpha = 0.1,
-    thickness = 30,
+   alpha = 0.9,
+    thickness = 20,
     line = list(
       color = "black",
-      width = 0
+      width = 0.1
     )
   ),
   
   link = list(
     source = combos$source-1, # convert to zero index
     target = combos$target-1, # convert to zero index
-    value = combos$value #size of connection
+    value = combos$value, #size of connection
+    color = 'rgba(0,0,0,0.1)'
     #color = combos$color #add colors for each link if desired
   )
 ) %>% 
