@@ -1,24 +1,87 @@
+# library(readr)
+# library(plotly)
+# library(RColorBrewer)
+# 
+# channel_stacks <- read_csv("data/data-shop.csv", skip = 11)
+# colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
+# head(channel_stacks)
+# 
+# s1 = plot_ly(
+#   channel_stacks, 
+#   y=~conversion, 
+#   x=~path_count,
+#   color=~conversion_rate, 
+#   size=~conversion_rate,
+#   text=~path
+# ) %>% layout(
+#   xaxis = list(type="log", title="Number of Paths"),
+#   yaxis = list(type="log", title="Number of Conversions")
+# ) %>% colorbar(
+#   title = "Rate"
+# )
+# 
+
 library(readr)
 library(plotly)
 library(RColorBrewer)
+# Install adobeanayticsr from github
+#devtools::install_github('benrwoodard/adobeanalyticsr', force = FALSE) 
 
-channel_stacks <- read_csv("data/data-shop.csv", skip = 11)
-colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
-head(channel_stacks)
+library(adobeanalyticsr)
+#Test Token has been refreshed and is upto date.
+aw_token()
+#delete the aa.auth file in WD if issues
 
-s1 = plot_ly(
-  channel_stacks, 
-  y=~conversion, 
-  x=~path_count,
-  color=~conversion_rate, 
-  size=~conversion_rate,
-  text=~path
-) %>% layout(
-  xaxis = list(type="log", title="Number of Paths"),
-  yaxis = list(type="log", title="Number of Conversions")
-) %>% colorbar(
-  title = "Rate"
+#Set Date range for Adobe Data pull below
+#Last 90 days starting from yesterday
+date_range = c(Sys.Date() - 10, Sys.Date() - 1)
+
+# Setup for Adobe Data
+aw_metrics <- aw_get_metrics()
+aw_dims <- aw_get_dimensions()
+aw_reportsuites <- aw_get_reportsuites()
+aw_calculatedmetrics <- aw_get_calculatedmetrics()
+aw_segments <- aw_get_segments()
+
+#Get the Adobe channel manager data using the 2.0 API from adobeanayticsr library
+channel_stack_adobe <- aw_freeform_table(
+  company_id = Sys.getenv("AW_COMPANY_ID"),
+  rsid = Sys.getenv("AW_REPORTSUITE_ID"),
+  date_range = date_range,
+  dimensions = c("evar38"),
+  metrics = c("event182","evar38instances"),
+  top = c(50000),
+  page = 0,
+  filterType = "breakdown",
+  segmentId = NA, 
+  metricSort = "desc",
+  include_unspecified = FALSE,
+  search = NA,
+  prettynames = FALSE,
+  debug = FALSE
 )
+
+#load CSV
+#channel_stacks <- read_csv("data/data-membership.csv", skip = 11)
+channel_stacks <- channel_stack_adobe
+colnames(channel_stacks) <- c("path", "conversion","path_count")
+head(channel_stacks)
+# Plot the scatter if needed (off for now)
+# p1 = plot_ly(
+#   channel_stacks, 
+#   y=~conversion, 
+#   x=~path_count,
+#   color=~conversion_rate, 
+#   size=~conversion_rate,
+#   text=~path
+# ) %>% layout(
+#   xaxis = list(type="log", title="Number of Paths"),
+#   yaxis = list(type="log", title="Number of Conversions")
+# ) %>% colorbar(
+#   title = "Rate"
+# )
+# p1
+
 s1
 channel_stacks$path_list = strsplit(x=channel_stacks$path,split=">")
 depth = 4
@@ -81,6 +144,8 @@ for(i in 1:length(label_length)){
   }
 }
 display_node_labels = c(display_node_labels, "Conversion")
+#Prep the Sankey Title based on Date and Channel
+sankey_title <- paste("Membership Channel Conversion Flow - Shop Sales ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 s2 <- plot_ly(
@@ -108,7 +173,7 @@ s2 <- plot_ly(
   )
 ) %>% 
   layout(
-    title = "Channel Conversion Flow - Shop Sales - Oct 1st - Dec 13th 2020",
+    title = sankey_title,
     font = list(
       size = 10
     )

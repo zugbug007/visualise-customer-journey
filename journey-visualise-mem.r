@@ -2,22 +2,23 @@ library(readr)
 library(plotly)
 library(RColorBrewer)
 # Install adobeanayticsr from github
-#devtools::install_github('benrwoodard/adobeanalyticsr', force = TRUE) 
+#devtools::install_github('benrwoodard/adobeanalyticsr', force = FALSE) 
 
 library(adobeanalyticsr)
 #Test Token has been refreshed and is upto date.
-#aw_token()
+aw_token()
+#delete the aa.auth file in WD if issues
 
 #Set Date range for Adobe Data pull below
 #Last 90 days starting from yesterday
-date_range = c(Sys.Date() - 90, Sys.Date() - 1)
+date_range = c(Sys.Date() - 10, Sys.Date() - 1)
 
 # Setup for Adobe Data
-# aw_metrics <- aw_get_metrics()
-# aw_dims <- aw_get_dimensions()
-# aw_reportsuites <- aw_get_reportsuites()
-# aw_calculatedmetrics <- aw_get_calculatedmetrics()
-# aw_segments <- aw_get_segments()
+aw_metrics <- aw_get_metrics()
+aw_dims <- aw_get_dimensions()
+aw_reportsuites <- aw_get_reportsuites()
+aw_calculatedmetrics <- aw_get_calculatedmetrics()
+aw_segments <- aw_get_segments()
 
 #Get the Adobe channel manager data using the 2.0 API from adobeanayticsr library
 channel_stack_adobe <- aw_freeform_table(
@@ -25,11 +26,11 @@ channel_stack_adobe <- aw_freeform_table(
   rsid = Sys.getenv("AW_REPORTSUITE_ID"),
   date_range = date_range,
   dimensions = c("evar38"),
-  metrics = c("event26","evar38instances","cm1957_5fd75c66ad718072358c85b8"),
+  metrics = c("event26","evar38instances"),
   top = c(50000),
   page = 0,
   filterType = "breakdown",
-  segmentId = NA,
+  segmentId = NA, 
   metricSort = "desc",
   include_unspecified = FALSE,
   search = NA,
@@ -40,7 +41,7 @@ channel_stack_adobe <- aw_freeform_table(
 #load CSV
 #channel_stacks <- read_csv("data/data-membership.csv", skip = 11)
 channel_stacks <- channel_stack_adobe
-colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
+colnames(channel_stacks) <- c("path", "conversion","path_count")
 head(channel_stacks)
 # Plot the scatter if needed (off for now)
 # p1 = plot_ly(
@@ -128,7 +129,6 @@ sankey_title <- paste("Membership Channel Conversion Flow - Membership Sales ", 
 p2 <- plot_ly(
   type = "sankey",
   orientation = "h",
-  
   node = list(
     label = display_node_labels,
     #color = node_colors,
