@@ -1,26 +1,3 @@
-# library(readr)
-# library(plotly)
-# library(RColorBrewer)
-# 
-# channel_stacks <- read_csv("data/data-shop.csv", skip = 11)
-# colnames(channel_stacks) <- c("path", "conversion","path_count", "conversion_rate")
-# head(channel_stacks)
-# 
-# s1 = plot_ly(
-#   channel_stacks, 
-#   y=~conversion, 
-#   x=~path_count,
-#   color=~conversion_rate, 
-#   size=~conversion_rate,
-#   text=~path
-# ) %>% layout(
-#   xaxis = list(type="log", title="Number of Paths"),
-#   yaxis = list(type="log", title="Number of Conversions")
-# ) %>% colorbar(
-#   title = "Rate"
-# )
-# 
-
 library(readr)
 library(plotly)
 library(RColorBrewer)
@@ -67,23 +44,23 @@ channel_stacks <- channel_stack_adobe
 colnames(channel_stacks) <- c("path", "conversion","path_count")
 head(channel_stacks)
 # Plot the scatter if needed (off for now)
-# p1 = plot_ly(
-#   channel_stacks, 
-#   y=~conversion, 
-#   x=~path_count,
-#   color=~conversion_rate, 
-#   size=~conversion_rate,
-#   text=~path
-# ) %>% layout(
-#   xaxis = list(type="log", title="Number of Paths"),
-#   yaxis = list(type="log", title="Number of Conversions")
-# ) %>% colorbar(
-#   title = "Rate"
-# )
-# p1
+p1 = plot_ly(
+  channel_stacks,
+  y=~conversion,
+  x=~path_count,
+  color=~conversion,
+  size=~conversion,
+  text=~path
+) %>% layout(
+  xaxis = list(type="log", title="Shop - Number of Paths"),
+  yaxis = list(type="log", title="Shop - Number of Conversions")
+) %>% colorbar(
+  title = "Rate"
+)
+p1
 
 channel_stacks$path_list = strsplit(x=channel_stacks$path,split=">")
-depth = 4
+depth = 5
 
 #Generate node labels and label length vectors
 node_labels=rep(list(list()),depth)
