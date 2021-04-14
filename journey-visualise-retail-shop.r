@@ -29,12 +29,12 @@ library(RColorBrewer)
 
 library(adobeanalyticsr)
 #Test Token has been refreshed and is upto date.
-aw_token()
+#aw_token()
 #delete the aa.auth file in WD if issues
 
 #Set Date range for Adobe Data pull below
 #Last 90 days starting from yesterday
-date_range = c(Sys.Date() - 10, Sys.Date() - 1)
+date_range = c(Sys.Date() - 366, Sys.Date() - 1)
 
 # Setup for Adobe Data
 aw_metrics <- aw_get_metrics()
@@ -53,7 +53,7 @@ channel_stack_adobe <- aw_freeform_table(
   top = c(50000),
   page = 0,
   filterType = "breakdown",
-  segmentId = NA, 
+  segmentId = "s1957_6076f7deb2029b591cf20e4a", # Segment Name: Shop Order Completion
   metricSort = "desc",
   include_unspecified = FALSE,
   search = NA,
@@ -82,7 +82,6 @@ head(channel_stacks)
 # )
 # p1
 
-s1
 channel_stacks$path_list = strsplit(x=channel_stacks$path,split=">")
 depth = 4
 

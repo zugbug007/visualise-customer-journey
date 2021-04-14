@@ -2,7 +2,7 @@ library(readr)
 library(plotly)
 library(RColorBrewer)
 # Install adobeanayticsr from github
-# devtools::install_github('benrwoodard/adobeanalyticsr', force = FALSE) 
+#devtools::install_github('benrwoodard/adobeanalyticsr', force = FALSE) 
 
 library(adobeanalyticsr)
 #Test Token has been refreshed and is upto date.
@@ -26,11 +26,11 @@ channel_stack_adobe <- aw_freeform_table(
   rsid = Sys.getenv("AW_REPORTSUITE_ID"),
   date_range = date_range,
   dimensions = c("evar38"),
-  metrics = c("event26","evar38instances"),
+  metrics = c("event73","evar38instances"),
   top = c(50000),
   page = 0,
   filterType = "breakdown",
-  segmentId = "s1957_6076f28b40d50e441ab3f0bd", # Segment Name: Membership Completion
+  segmentId = "s1957_6076f79f1786ec6aa730cdbc", # Segment Name: Membership Renewal Completion
   metricSort = "desc",
   include_unspecified = FALSE,
   search = NA,
@@ -123,7 +123,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Membership Sales ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Membership Channel Conversion Flow - Membership Renewals ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 p2 <- plot_ly(
