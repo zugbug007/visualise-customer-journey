@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 ## Channel Conversion Flows
@@ -23,11 +23,12 @@ library(RColorBrewer)
 library(adobeanalyticsr)
 #Test Token has been refreshed and is upto date.
 #aw_token()
+monitorStartTime_journey <- Sys.time()
 #delete the aa.auth file in WD if issues
 
 #Set Date range for Adobe Data pull below
 #Last 90 days starting from yesterday
-date_range = c(Sys.Date() - 366, Sys.Date() - 1)
+date_range = c(Sys.Date() - 14, Sys.Date() - 1)
 
 # Setup for Adobe Data
 # aw_metrics <- aw_get_metrics()
@@ -151,7 +152,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Membership Sales ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Channel Conversion Flow - Membership Sales ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 p2 <- plot_ly(
@@ -299,7 +300,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Membership Renewals ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Channel Conversion Flow - Membership Renewals ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 p2 <- plot_ly(
@@ -445,7 +446,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Holiday Sales ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Channel Conversion Flow - Holiday Sales ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 p2 <- plot_ly(
@@ -588,7 +589,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Shop Sales ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Channel Conversion Flow - Shop Sales ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 s2 <- plot_ly(
@@ -737,7 +738,7 @@ for(i in 1:length(label_length)){
 }
 display_node_labels = c(display_node_labels, "Conversion")
 #Prep the Sankey Title based on Date and Channel
-sankey_title <- paste("Membership Channel Conversion Flow - Donations ", date_range[1], "-", date_range[2])
+sankey_title <- paste("Channel Conversion Flow - Donations ", date_range[1], "-", date_range[2])
 
 #Generate Sankey diagram
 p2 <- plot_ly(
@@ -772,3 +773,9 @@ p2 <- plot_ly(
 p2
 ```
 
+```{r run-time, include=FALSE}
+monitorEndTime_journey <- Sys.time()
+# Write out to the console how long it took for the entire process to run.
+lastrunTime_journey <- paste0("This process took ",monitorEndTime_journey - monitorStartTime_journey," minutes to run.",sep=" ")
+lastrunTime_journey
+```
